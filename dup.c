@@ -78,11 +78,11 @@ void search(char *path, FileList **fileList)
             type=getFileType(newPath, infoOfDir);
             if (type==DT_REG)
             {
-                add(createNode(infoOfDir,newPath),&fileList); 
+                add(createNode(infoOfDir,newPath),fileList); 
             }
             else if (type==DT_DIR)
             {
-                search(newPath);   
+                search(newPath, fileList);   
             }
         }
     }
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
 {
     FileList *fileList=NULL;
     printf("Buscando archivos repetidos en el directorio actual...: %s\n", ".");
-    search(".",fileList);
+    search(".",&fileList);
     deleteEqualsFiles(&fileList);
     return 0;
 }
