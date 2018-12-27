@@ -11,19 +11,17 @@
 #include <ctype.h>
 #include "filelist.h"
 
-char *getFullName(char *ruta, struct dirent *ent)
+char *getPath(char *path, struct dirent *info)
 {
-  char *nombrecompleto;
-  int tmp;
-
-  tmp=strlen(ruta);
-  nombrecompleto=(char*)malloc(tmp+strlen(ent->d_name)+2); /* Sumamos 2, por el \0 y la barra de directorios (/) no sabemos si falta */
-  if (ruta[tmp-1]=='/')
-    sprintf(nombrecompleto,"%s%s", ruta, ent->d_name);
-  else
-    sprintf(nombrecompleto,"%s/%s", ruta, ent->d_name);
- 
-  return nombrecompleto;
+    char *fullPath;
+    int lenP=strlen(path);
+    int lenN=strlen(info->d_name);
+    fullPath=(char*)malloc(lenP+lenN+2);
+    strcat(fullPath,path);
+    if (path[lenP-1]!='/')
+        strcat(fullPath,"/");
+    strcat(fullPath,info->d_name);
+    return fullPath;
 }
 
 char searchType(char *path)
@@ -74,7 +72,7 @@ void search(char *path, FileList **fileList)
         {
             char type;
             char *newPath;   
-            newPath=getFullName(path, infoOfDir);
+            newPath=getPath(path, infoOfDir);
             type=getFileType(newPath, infoOfDir);
             if (type==DT_REG)
             {
