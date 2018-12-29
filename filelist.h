@@ -1,3 +1,5 @@
+typedef struct FileList FileList;
+
 struct FileList
 {
     struct dirent *file;
@@ -6,7 +8,7 @@ struct FileList
     char *data;
     int size;
     struct stat sstat;
-    FileList *sig;
+    struct FileList *sig;
 };
 
 FileList * createNode(struct dirent *file, char *path)
